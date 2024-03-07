@@ -1,13 +1,16 @@
-import { signOut } from 'firebase/auth';
-import React, { useState } from 'react'
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import React, { useEffect} from 'react'
 import { auth } from '../utils/firbase';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUser, removeUser } from '../utils/UserSlice';
+import { LOGO } from '../utils/constants';
 
 const Header = () => {
 
   const navigate = useNavigate();
   const user = useSelector(store => store.user);
+  const dispatch = useDispatch();
 
   const SignOut = () =>{
     signOut(auth).then(() => {
@@ -27,15 +30,41 @@ const Header = () => {
   // const handleMouseOut = () =>{
   //   setisHover(false)
   // }'
+
+  useEffect(()=>{
+ 
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const {displayName,email,uid,photoURL}= user
+        
+        dispatch(addUser({uid:uid , displayName : displayName , email : email , photoURL : photoURL}))
+        navigate("/browse");
+      
+        // ...
+      } else {
+        dispatch(removeUser())
+        navigate("/")
+        // User is signed out
+        // ...
+      }
+    });
+
+
+    //Unsubscribe when  the components is unmount (because onAuthStateChanged is render every time header is rendered so that ,unmount the onAuth component)
+    return () => unsubscribe();
+  },[])
+
  return (
     <div className='absolute bg-gradient-to-b from-black w-full z-10 flex justify-between'>
-        <img className=' w-44 mx-8 my-1' src = "https://cdn.cookielaw.org/logos/dd6b162f-1a32-456a-9cfe-897231c7763c/4345ea78-053c-46d2-b11e-09adaef973dc/Netflix_Logo_PMS.png"
+        <img className=' w-40 h-16 mx-8 my-5' src = {LOGO}
 
         alt='logo'/>
 
     {/* <div className=' w-8 h-8 my-7 flex  mr-24' onClick={handleMouseOver} >   */}
          {user && <div className='flex p-2'> 
-      <img src = {user?.photoURL ? user?.photoURL : "https://occ-0-2164-58.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png?r=229" }
+      <img src = {user?.photoURL}
       alt='signin-logo' className= "w-10 h-10 my-7 mx-2 "/>
        {/* <div>
        <svg className="mt-3 ml-3 w-2 h-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 10">

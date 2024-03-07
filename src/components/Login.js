@@ -3,9 +3,10 @@ import Header from "./Header";
 import { CheckValidateData } from "../utils/validate";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword, updateProfile} from "firebase/auth";
 import {auth} from "../utils/firbase";
-import { useNavigate } from "react-router-dom";
+
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/UserSlice";
+import { AVATAR } from "../utils/constants";
 
 const Login = () => {
 
@@ -13,7 +14,7 @@ const Login = () => {
 
   const [isSignInForm,setSigninForm] = useState(true);
   const [errormessage,setErrormessage] = useState(null);
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   
   
@@ -47,7 +48,7 @@ const Login = () => {
         // Signed up 
         const user = userCredential.user;
         updateProfile(user, {
-          displayName: name.current.value, photoURL: "https://pbs.twimg.com/profile_images/1027119450510647296/0mOf4Dg9_400x400.jpg"
+          displayName: name.current.value, photoURL: AVATAR
         }).then(() => {
           
           // Profile updated!
@@ -57,7 +58,7 @@ const Login = () => {
           // An error occurred
           // ...
         });
-       navigate("/browse");
+      
       })
       .catch((error) => {
          const errorCode = error.code;
@@ -71,8 +72,8 @@ else{
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    console.log(user)
-    navigate("/browse");
+
+  
 
   })
   .catch((error) => {
@@ -85,8 +86,7 @@ else{
 
   }
   
-  console.log(auth)
-
+ 
   return (
     <div>
       <Header />

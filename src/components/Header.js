@@ -4,14 +4,18 @@ import { auth } from '../utils/firbase';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser, removeUser } from '../utils/UserSlice';
-import { LOGO } from '../utils/constants';
+import { LANG_SUPPORT, LOGO } from '../utils/constants';
+import { toggleGptSearch } from '../utils/Gptslice';
+import { changeLanguage } from '../utils/configSlice';
 
 const Header = () => {
 
   const navigate = useNavigate();
   const user = useSelector(store => store.user);
+  const gptSearch = useSelector(store => store.gpt.showGptSerach)
   const dispatch = useDispatch();
 
+ 
   const SignOut = () =>{
     signOut(auth).then(() => {
       navigate("/");
@@ -30,6 +34,12 @@ const Header = () => {
   // const handleMouseOut = () =>{
   //   setisHover(false)
   // }'
+  
+  const handleSearch = ()=>{
+    
+    dispatch(toggleGptSearch())
+    
+  }
 
   useEffect(()=>{
  
@@ -56,16 +66,28 @@ const Header = () => {
     return () => unsubscribe();
   },[])
 
+  const handleChange = (e) =>{
+    dispatch(changeLanguage(e.target.value))
+  }
+
  return (
     <div className='absolute bg-gradient-to-b from-black w-full z-10 flex justify-between'>
-        <img className=' w-40 h-16 mx-8 my-5' src = {LOGO}
+        <img className=' w-44 h-16 mx-8 my-2' src = {LOGO}
 
         alt='logo'/>
 
     {/* <div className=' w-8 h-8 my-7 flex  mr-24' onClick={handleMouseOver} >   */}
          {user && <div className='flex p-2'> 
+         <div>
+          
+         {gptSearch && <select className='p-1 rounded-md bg-gray-700 text-white' onChange={handleChange}>
+            {LANG_SUPPORT.map(lang => <option key={lang.identity} value={lang.identity}>{lang.name}</option>)}
+          </select>
+         }
+         <button className='px-4 py-2 mx-4 my-3 bg-blue-700 text-white rounded-lg' onClick={handleSearch}>{gptSearch ? "Home Page": "GPT Search"  }</button>
+        </div>
       <img src = {user?.photoURL}
-      alt='signin-logo' className= "w-10 h-10 my-7 mx-2 "/>
+      alt='signin-logo' className= "w-10 h-10 my-3 mx-2 "/>
        {/* <div>
        <svg className="mt-3 ml-3 w-2 h-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 10">
     <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />

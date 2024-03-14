@@ -48,15 +48,15 @@ const GptSearchPage = () => {
 
 
   return (
-    <div className="pt-28 flex justify-center ">
-        <form className="w-1/2 bg-black grid grid-cols-12" onSubmit={(e)=>e.preventDefault()}>
+    <div className="pt-[45%] md:pt-28 flex justify-center">
+        <form className="w-full  md:w-1/2 bg-black grid grid-cols-12" onSubmit={(e)=>e.preventDefault()}>
             <input
             ref={searchText}
              type="text" 
              placeholder={LangSupport[langSelector].placeholder} 
-             className="col-span-9 m-4 p-3 rounded-lg"
+             className="col-span-8 md:col-span-9 m-4 p-2 md:p-3 md:rounded-lg rounded-sm"
               />
-            <button className= "col-span-3 bg-red-600 text-white rounded-lg px-4 py-2 m-4" onClick={handleChange} >{LangSupport[langSelector].search}
+            <button className= "col-span-4 md:col-span-3 bg-red-600 text-white md:rounded-lg rounded-sm  py-1 md:px-4 md:py-2 m-4" onClick={handleChange} >{LangSupport[langSelector].search}
             </button>
         </form>
     </div>

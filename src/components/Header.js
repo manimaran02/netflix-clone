@@ -71,13 +71,13 @@ const Header = () => {
   }
 
  return (
-    <div className='absolute bg-gradient-to-b from-black w-full z-10 flex justify-between'>
-        <img className=' w-44 h-16 mx-8 my-2' src = {LOGO}
+    <div className='absolute bg-gradient-to-b from-black w-full z-10 flex flex-col md:flex-row justify-between '>
+        <img className=' w-44 h-16 mx-auto md:mx-6 my-2 ' src = {LOGO}
 
         alt='logo'/>
 
     {/* <div className=' w-8 h-8 my-7 flex  mr-24' onClick={handleMouseOver} >   */}
-         {user && <div className='flex p-2'> 
+         {user && <div className='flex p-2 justify-center'> 
          <div>
           
          {gptSearch && <select className='p-1 rounded-md bg-gray-700 text-white' onChange={handleChange}>

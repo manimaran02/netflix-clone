@@ -6,13 +6,17 @@ import GptSearchPage from "./GptSearchPage"
 const GptSearch = () => {
   
   return (
-    <div >
-        
-        <img src= {BG_IMG} alt="bg_img" className="fixed -z-10" />
+    <>
+    <div className="fixed -z-10">
+        <img className="w-screen h-screen object-cover" src= {BG_IMG} alt="bg_img"  />
+        </div>
+        <div> 
         <GptSearchPage/>
         <GptMovieSuggestion/>
-       
-    </div>
+        </div>
+
+    
+    </>
   )
 }
 
